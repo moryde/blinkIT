@@ -1,4 +1,4 @@
-#define analogReadValue 800 //the value that the LDR will have when the LED is on
+#define analogReadValue 600 //the value that the LDR will have when the LED is on
 #define delimiter '@' 
 #define clock 50
 
@@ -28,6 +28,7 @@ String readData(int myDataPin)
   {
   if(analogRead(0) > analogReadValue)
   {
+      Serial.println(syncCount);
     syncCount++;
     if(syncCount > 15) //Check if LED has been countinuesly on for 15 x 50ms
     {
@@ -48,10 +49,11 @@ String readData(int myDataPin)
               pinState = 1;
               tempByte = tempByte | (1 << i);
             }
-          delay(50);
+          delay(clock);
           }
           if(tempByte != delimiter)
           {
+            Serial.println(tempByte);
             data += tempByte; //Build the final data string char by char
           } 
           else
@@ -68,7 +70,7 @@ String readData(int myDataPin)
   {
   syncCount = 0; 
   }
-  delay(clock);
+  delay(50);
   }
 }
 
